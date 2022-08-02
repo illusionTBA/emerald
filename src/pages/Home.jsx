@@ -1,5 +1,5 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable no-undef */
+/* eslint-disable */
+
 import React from 'react';
 import './styles/Home.css';
 import { FiMail } from 'react-icons/fi';
@@ -8,7 +8,7 @@ import { BsFillChatLeftDotsFill } from 'react-icons/bs';
 import { FaUserCog } from 'react-icons/fa';
 import { useRef, useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Modal, Button, Text } from '@nextui-org/react';
+import { Modal, Button, Text, Popover, Tooltip } from '@nextui-org/react';
 import SearchBar from '../components/SearchBar';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -16,7 +16,8 @@ function Home() {
   const input = useRef(null);
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
-  const [emails, setEmails] = useState([false]);
+  const [emails, setEmails] = useState([]);
+  const [eMessage, setEMessage] = useState('');
   const [visibleMail, setVisibleMail] = React.useState(false);
   const handlerMail = () => setVisibleMail(true);
 
@@ -48,18 +49,27 @@ function Home() {
     fetchEmail();
   }, []);
 
-  const FetchEmails = async () => {
-    // split the email into two parts
+  const FetchEmailContent = async (id) => {
     const emailSplit = email.split('@');
-    // get the domain name
     const domain = emailSplit[1];
-    // get the username
+    const username = emailSplit[0];
+    const res = await fetch(
+      `https://www.1secmail.com/api/v1/?action=readMessage&login=${username}&domain=${domain}&id=${id}`,
+    );
+    const data = await res.json();
+    setEMessage(data.textBody);
+  };
+
+  const FetchEmails = async () => {
+    const emailSplit = email.split('@');
+    const domain = emailSplit[1];
     const username = emailSplit[0];
     const res = await fetch(
       `https://www.1secmail.com/api/v1/?action=getMessages&login=${username}&domain=${domain}`,
     );
     const data = await res.json();
     setEmails(data);
+    FetchEmailContent(data[0].id);
   };
 
   return (
@@ -168,24 +178,27 @@ function Home() {
                 : {email}
               </Text>
             </div>
-            <div class="overflow-x-auto relative rounded-md bg-primary-500">
-              <table class="w-full text-sm text-left text-gray-500">
-                <caption class="p-5 text-lg font-semibold text-left text-gray-900 bg-primary-500 ">
+            <div className="overflow-x-auto relative rounded-md bg-primary-500">
+              <table className="w-full text-sm text-left text-gray-500">
+                <caption className="p-5 text-lg font-semibold text-left text-gray-900 bg-primary-500 ">
                   <p className="text-primary-100">
                     please note the refresh button is not instant so please give
                     it some time after you recieve the email
                   </p>
                 </caption>
-                <thead class="text-xs uppercase bg-primary-400">
+                <thead className="text-xs uppercase bg-primary-400">
                   <tr className="text-primary-100">
-                    <th scope="col" class="py-3 px-6">
+                    <th scope="col" className="py-3 px-6">
                       From
                     </th>
-                    <th scope="col" class="py-3 px-6">
+                    <th scope="col" className="py-3 px-6">
                       Subject
                     </th>
-                    <th scope="col" class="py-3 px-6">
+                    <th scope="col" className="py-3 px-6">
                       Date
+                    </th>
+                    <th scope="col" className="py-3 px-6">
+                      Content
                     </th>
                   </tr>
                 </thead>
@@ -205,6 +218,9 @@ function Home() {
                         </td>
                         <td className="py-4 px-6 text-primary-100 bg-primary-400">
                           {email.date}
+                        </td>
+                        <td className="py-4 px-6 text-primary-100 bg-primary-400">
+                          {eMessage || 'loading...'}
                         </td>
                       </tr>
                     </tbody>
