@@ -1,12 +1,13 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import { useRef } from 'react';
+import { config } from '../config';
 function SearchBar() {
   const input = useRef(null);
   const search = () => {
     window.navigator.serviceWorker
       .register('/sw.js', {
-        scope: __uv$config.prefix,
+        scope: config.prefix,
       })
       .then(() => {
         let url = input.current.value;
@@ -14,7 +15,7 @@ function SearchBar() {
         else if (!(url.startsWith('https://') || url.startsWith('http://')))
           url = 'http://' + url;
 
-        window.location.href = __uv$config.prefix + __uv$config.encodeUrl(url);
+        window.location.href = config.prefix + config.encodeUrl(url);
       });
   };
   function isUrl(val = '') {
