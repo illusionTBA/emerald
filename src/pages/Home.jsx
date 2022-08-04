@@ -7,27 +7,43 @@ import { AiOutlinePhone } from 'react-icons/ai';
 import { BsFillChatLeftDotsFill } from 'react-icons/bs';
 import { FaUserCog } from 'react-icons/fa';
 import { useRef, useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Modal, Button, Text, Popover, Tooltip } from '@nextui-org/react';
 import SearchBar from '../components/SearchBar';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { NavLink } from 'react-router-dom';
+
+const pageTransition = {
+  type: 'tween',
+  ease: 'anticipate',
+  duration: 0.5,
+};
+
 function Home() {
   const input = useRef(null);
   const [phone, setPhone] = useState('');
+  const [messages, setMessages] = useState([]);
   const [email, setEmail] = useState('');
   const [emails, setEmails] = useState([]);
   const [eMessage, setEMessage] = useState('');
   const [visibleMail, setVisibleMail] = React.useState(false);
   const handlerMail = () => setVisibleMail(true);
-
-  const closeHandler = () => {
+  const closeHandlerMail = () => {
     setVisibleMail(false);
+    console.log('closed');
+  };
+
+  const [visiblePhone, setVisiblePhone] = React.useState(false);
+  const handlerPhone = () => setVisiblePhone(true);
+
+  const closeHandlerPhone = () => {
+    setVisiblePhone(false);
     console.log('closed');
   };
   useEffect(() => {
     const fetchPhone = async () => {
-      const res = await fetch('https://emeraldbackend.herokuapp.com/init', {
+      const res = await fetch(`${process.env.API}init`, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -37,6 +53,24 @@ function Home() {
     };
     fetchPhone();
   }, []);
+
+  const refreshPhone = async () => {
+    const url = `${process.env.API}refresh`;
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        num: phone,
+      }),
+    });
+    const data = await res.json();
+    console.log(data);
+
+    setMessages(data);
+  };
+
   console.log(phone);
   useEffect(() => {
     const fetchEmail = async () => {
@@ -72,18 +106,23 @@ function Home() {
     FetchEmailContent(data[0].id);
   };
 
+  const pageVariants = {
+    initial: { opacity: 0, y: 100 },
+    animate: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: 100 },
+  };
+
   return (
-    <motion.div className="flex w-full h-screen bg-primary-500 justify-center">
+    <motion.div
+      className="flex w-full h-screen bg-primary-500 justify-center"
+      variants={pageVariants}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      transition={pageTransition}
+    >
       <motion.div className="flex flex-col mt-4 items-center">
-        <motion.h1
-          initial={{ opacity: 0, y: 100 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 100 }}
-          transition={{ duration: 1 }}
-          className="text-6xl text-primary-200"
-        >
-          emerald
-        </motion.h1>
+        <motion.h1 className="text-6xl text-primary-200">emerald</motion.h1>
         <div className="group flex flex-row">
           <svg className="icon" aria-hidden="true" viewBox="0 0 24 24">
             <g>
@@ -103,14 +142,12 @@ function Home() {
                 Get a temporary email address for your online use
               </div>
             </div>
-            <div className="card">
+            <div className="card opacity-50">
               <div className="card-header">
                 <AiOutlinePhone className="mr-2" />
                 Phone
               </div>
-              <div className="card-body">
-                Get a temporary phone number for your online use
-              </div>
+              <div className="card-body">Coming soon</div>
             </div>
             <div className="card opacity-50">
               <div className="card-header">
@@ -123,23 +160,21 @@ function Home() {
         </div>
       </motion.div>
       <div className="fixed bottom-0 justify-center">
-        <button
+        <NavLink
           className="settings-button flex flex-row justify-center items-center hover:-translate-y-1"
-          onClick={() => {
-            window.location.href = '/settings';
-          }}
+          to={'/settings'}
         >
           <FaUserCog className="mr-2 text-2xl" />
           Settings
-        </button>
+        </NavLink>
       </div>
       <Modal
         scroll
         closeButton
         aria-labelledby="modal-title"
         open={visibleMail}
-        onClose={closeHandler}
-        width="600px"
+        onClose={closeHandlerMail}
+        width="800px"
         css={{
           backgroundColor: '#52796f',
         }}
@@ -220,7 +255,7 @@ function Home() {
                           {email.date}
                         </td>
                         <td className="py-4 px-6 text-primary-100 bg-primary-400">
-                          {eMessage || 'loading...'}
+                          {eMessage}
                         </td>
                       </tr>
                     </tbody>
@@ -242,16 +277,115 @@ function Home() {
               backgroundColor: '#84a98c',
               color: 'black',
             }}
-            onClick={closeHandler}
+            onClick={closeHandlerMail}
           >
             Close
           </Button>
-          <Button auto onPress={FetchEmails}>
+          <Button auto onClick={FetchEmails}>
             Refresh
           </Button>
         </Modal.Footer>
       </Modal>
-      <ToastContainer autoClose={8000} />
+      {/* Phone modal bellow */}
+      {/* <Modal
+        closeButton
+        aria-labelledby="modal-title"
+        width="800px"
+        open={visiblePhone}
+        onClose={closeHandlerPhone}
+        css={{
+          backgroundColor: '#52796f',
+        }}
+      >
+        <Modal.Header>
+          <Text
+            id="modal-title"
+            size={20}
+            css={{
+              color: '#CAD2C5',
+            }}
+          >
+            Emerald Phone
+          </Text>
+        </Modal.Header>
+        <Modal.Body>
+          <div className="flex flex-col">
+            <div className="flex flex-row">
+              <Text size={16} css={{ color: '#CAD2C5' }}>
+                Your temporary phone number is
+              </Text>
+              <Text
+                size={16}
+                css={{ color: '#84a98c' }}
+                onClick={() => {
+                  navigator.clipboard.writeText(email);
+                  toast.success(
+                    'Successfully copied phone number to clipboard',
+                    {
+                      position: toast.POSITION.BOTTOM_RIGHT,
+                    },
+                  );
+                }}
+              >
+                : {phone}
+              </Text>
+            </div>
+
+            <div className="overflow-x-auto relative rounded-md bg-primary-500">
+              <table className="w-full text-sm text-left text-gray-500">
+                <caption className="p-5 text-lg font-semibold text-left text-gray-900 bg-primary-500 ">
+                  <p className="text-primary-100">
+                    NOTICE : This uses an external api for the phone numbers
+                    meaning that they may have messages already!.
+                  </p>
+                </caption>
+                <thead className="text-xs uppercase bg-primary-400">
+                  <tr className="text-primary-100">
+                    <th scope="col" className="py-3 px-6">
+                      Date
+                    </th>
+                    <th scope="col" className="py-3 px-6">
+                      Message
+                    </th>
+                  </tr>
+                </thead>
+
+                {messages.map((message, index) => {
+                  return (
+                    <tbody className="bg-primary-400" key={index}>
+                      <tr key={index} className=" border-b bg-primary-400">
+                        <td className="py-4 px-6 text-primary-100 bg-primary-400">
+                          {Date.now()}
+                        </td>
+                        <td className="py-4 px-6 text-primary-100 bg-primary-400">
+                          {message.text}
+                        </td>
+                      </tr>
+                    </tbody>
+                  );
+                })}
+              </table>
+            </div>
+          </div>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            auto
+            flat
+            onClick={closeHandlerPhone}
+            css={{
+              backgroundColor: '#84a98c',
+              color: 'black',
+            }}
+          >
+            Close
+          </Button>
+          <Button auto onClick={refreshPhone}>
+            Refresh
+          </Button>
+        </Modal.Footer>
+      </Modal> */}
+      <ToastContainer autoClose={2000} />
     </motion.div>
   );
 }

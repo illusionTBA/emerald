@@ -12,13 +12,16 @@ function App() {
   const location = useLocation();
 
   return (
-    <AnimatePresence exitBeforeEnter>
-      <Routes key={location.pathname} location={location}>
-        <Route path="/" element={<Home />} />
-        <Route path="/settings" element={<Settings />} />
-        <Route path="/proxy:id" element={<Proxy />} />
-      </Routes>
-    </AnimatePresence>
+    <div className='flex w-full h-screen bg-primary-500 overflow-hidden'>
+      <AnimatePresence exitBeforeEnter>
+        <Routes location={location} key={location.key}>
+          <Route path="/" element={<Home />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/proxy:id" element={<Proxy />} />
+        </Routes>
+      </AnimatePresence>
+    </div>
+
   );
 }
 

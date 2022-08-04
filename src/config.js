@@ -1,7 +1,7 @@
 /* eslint-disable no-undef */
 export const config = {
     prefix: '/~/',
-    bare: "https://incog.dev/bare/",
+    bare: "https://bare.illusionss.dev/",
     encodeUrl: Ultraviolet.codec.xor.encode,
     decodeUrl: Ultraviolet.codec.xor.decode,
     handler: '/uv/uv.handler.js',
