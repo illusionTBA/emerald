@@ -20,6 +20,12 @@ const pageTransition = {
   duration: 0.5,
 };
 
+const pageVariants = {
+  initial: { opacity: 0, x: '100vh' },
+  animate: { opacity: 1, x: 0 },
+  exit: { opacity: 0, x: '-100vh' },
+};
+
 function Home() {
   const input = useRef(null);
   const [phone, setPhone] = useState('');
@@ -41,18 +47,18 @@ function Home() {
     setVisiblePhone(false);
     console.log('closed');
   };
-  useEffect(() => {
-    const fetchPhone = async () => {
-      const res = await fetch(`${process.env.API}init`, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      const data = await res.json();
-      setPhone(data.num);
-    };
-    fetchPhone();
-  }, []);
+  // useEffect(() => {
+  //   const fetchPhone = async () => {
+  //     const res = await fetch(`${process.env.API}init`, {
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     });
+  //     const data = await res.json();
+  //     setPhone(data.num);
+  //   };
+  //   fetchPhone();
+  // }, []);
 
   const refreshPhone = async () => {
     const url = `${process.env.API}refresh`;
@@ -70,15 +76,13 @@ function Home() {
 
     setMessages(data);
   };
-
-  console.log(phone);
   useEffect(() => {
     const fetchEmail = async () => {
       const res = await fetch(
-        'https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=10',
+        'https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1',
       );
       const data = await res.json();
-      setEmail(data[0]);
+      setEmail(data);
     };
     fetchEmail();
   }, []);
@@ -104,12 +108,6 @@ function Home() {
     const data = await res.json();
     setEmails(data);
     FetchEmailContent(data[0].id);
-  };
-
-  const pageVariants = {
-    initial: { opacity: 0, y: 100 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: 100 },
   };
 
   return (
