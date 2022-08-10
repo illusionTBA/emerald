@@ -23,7 +23,7 @@ function App() {
     }
   }, []);
   return (
-    <div className='flex w-full h-screen bg-primary-500 overflow-hidden'>
+    <div className='flex w-full h-screen bg-primary-500 overflow-x-hidden'>
       <AnimatePresence exitBeforeEnter>
         <Routes location={location} key={location.key}>
           <Route path="/" element={<Home />} />

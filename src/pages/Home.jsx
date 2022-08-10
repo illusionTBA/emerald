@@ -13,7 +13,8 @@ import SearchBar from '../components/SearchBar';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { NavLink } from 'react-router-dom';
-
+import BareClient from '@tomphttp/bare-client';
+import { config } from '../config';
 const pageTransition = {
   type: 'tween',
   ease: 'anticipate',
@@ -35,6 +36,7 @@ function Home() {
   const [eMessage, setEMessage] = useState('');
   const [visibleMail, setVisibleMail] = React.useState(false);
   const handlerMail = () => setVisibleMail(true);
+  const bare = new BareClient(config.bare);
   const closeHandlerMail = () => {
     setVisibleMail(false);
     console.log('closed');
@@ -78,11 +80,20 @@ function Home() {
   };
   useEffect(() => {
     const fetchEmail = async () => {
-      const res = await fetch(
-        'https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1',
-      );
-      const data = await res.json();
-      setEmail(data);
+      try {
+        const res = await fetch(
+          'https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1',
+        );
+        const data = await res.json();
+        setEmail(data);
+      } catch (error) {
+        console.log('main fetch failed using bare now...');
+        const bareres = await bare.fetch(
+          'https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1',
+        );
+        const data = await bareres.json();
+        console.log(data);
+      }
     };
     fetchEmail();
   }, []);
