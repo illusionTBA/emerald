@@ -1,5 +1,13 @@
-/* eslint-disable no-undef */
-export const config = {
+/* eslint-disable */
+function format(env) {
+    const { host, hostname, protocol } = location;
+    return env
+        .replace('%{location.host}', host)
+        .replace('%{location.hostname}', hostname)
+        .replace('%{location.protocol}', protocol);
+}
+
+self.__uv$config = {
     prefix: '/~/',
     bare: "https://bare-server-vercel.vercel.app/",
     encodeUrl: Ultraviolet.codec.xor.encode,
@@ -8,4 +16,4 @@ export const config = {
     bundle: '/uv/uv.bundle.js',
     config: '/uv/uv.config.js',
     sw: '/uv/uv.sw.js',
-}
+};

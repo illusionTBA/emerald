@@ -11,7 +11,7 @@ function SearchBar() {
       })
       .then(() => {
         let url = input.current.value;
-        if (!isUrl(url)) url = 'https://www.google.com/search?q=' + url;
+        if (!isUrl(url)) url = 'https://search.brave.com/search?q=' + url;
         else if (!(url.startsWith('https://') || url.startsWith('http://')))
           url = 'http://' + url;
 
