@@ -2,7 +2,7 @@
 
 self.__uv$config = {
     prefix: '/~/',
-    bare: "https://incog.dev/bare/",
+    bare: "https://bare-server-vercel.vercel.app/",
     encodeUrl: Ultraviolet.codec.xor.encode,
     decodeUrl: Ultraviolet.codec.xor.decode,
     handler: '/uv/uv.handler.js',
