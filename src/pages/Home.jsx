@@ -83,6 +83,9 @@ function Home() {
       try {
         const res = await fetch(
           'https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1',
+          {
+            headers: {},
+          },
         );
         const data = await res.json();
         setEmail(data);
@@ -90,10 +93,12 @@ function Home() {
         console.log('main fetch failed using bare now...');
         const bareres = await bare.fetch(
           'https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1',
-          Headers({
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-          }),
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'Access-Control-Allow-Origin': '*',
+            },
+          },
         );
         const data = await bareres.json();
         console.log(data);
