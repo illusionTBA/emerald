@@ -15,7 +15,7 @@ function App() {
       localStorage.setItem(
         'settings',
         JSON.stringify({
-          proxy: 'uv',
+          proxy: 'dip',
           cloakType: 'none',
           bare: 'https://bare-server-vercel.vercel.app/',
         }),

@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable no-undef */
 import React from 'react';
 import { useRef, useState } from 'react';
@@ -6,38 +7,72 @@ import BareClient from '@tomphttp/bare-client';
 function SearchBar() {
   const input = useRef(null);
   const [Seggustions, setSuggestions] = useState([]);
+  const [inputvalue, setInputvalue] = useState('');
   const bare = new BareClient(config.bare);
+  const settings = JSON.parse(localStorage.getItem('settings'));
   const search = () => {
-    window.navigator.serviceWorker
-      .register('/sw.js', {
-        scope: config.prefix,
-      })
-      .then(() => {
-        let url = input.current.value;
-        if (!isUrl(url)) url = 'https://search.brave.com/search?q=' + url;
-        else if (!(url.startsWith('https://') || url.startsWith('http://')))
-          url = 'http://' + url;
-
-        window.location.href = config.prefix + config.encodeUrl(url);
+    if (settings.proxy === 'uv') {
+      worker().then((e) => {
+        let val = input.current.value;
+        if (!isUrl(val)) val = 'https://search.brave.com/search?q=' + val;
+        else if (!(val.startsWith('https://') || val.startsWith('http://')))
+          val = 'http://' + val;
+        location.assign(
+          window.__uv$config.prefix + window.__uv$config.encodeUrl(val),
+        );
       });
+    } else if (settings.proxy === 'dip') {
+      worker().then((e) => {
+        let val = input.current.value;
+        if (!isUrl(val)) val = 'https://search.brave.com/search?q=' + val;
+        else if (!(val.startsWith('https://') || val.startsWith('http://')))
+          val = 'http://' + val;
+
+        location.assign(
+          window.__DIP.config.prefix + window.__DIP.encodeURL(val),
+        );
+      });
+    }
+    // window.navigator.serviceWorker
+    //   .register('/sw.js', {
+    //     scope: config.prefix,
+    //   })
+    //   .then(() => {
+    //     let url = input.current.value;
+    //     if (!isUrl(url)) url = 'https://search.brave.com/search?q=' + url;
+    //     else if (!(url.startsWith('https://') || url.startsWith('http://')))
+    //       url = 'http://' + url;
+    //     window.location.href = '/proxy/' + config.encodeUrl(url);
+    //   });
   };
 
   const search_phrase = (phrase) => {
-    window.navigator.serviceWorker
-      .register('/sw.js', {
-        scope: config.prefix,
-      })
-      .then(() => {
-        let url = phrase;
-        if (!isUrl(url)) url = 'https://search.brave.com/search?q=' + url;
-        else if (!(url.startsWith('https://') || url.startsWith('http://')))
-          url = 'http://' + url;
-
-        window.location.href = config.prefix + config.encodeUrl(url);
+    if (settings.proxy === 'uv') {
+      worker().then((e) => {
+        let val = phrase;
+        if (!isUrl(val)) val = 'https://search.brave.com/search?q=' + val;
+        else if (!(val.startsWith('https://') || val.startsWith('http://')))
+          val = 'http://' + val;
+        location.assign(
+          window.__uv$config.prefix + window.__uv$config.encodeUrl(val),
+        );
       });
+    } else if (settings.proxy === 'dip') {
+      worker().then((e) => {
+        let val = phrase;
+        if (!isUrl(val)) val = 'https://search.brave.com/search?q=' + val;
+        else if (!(val.startsWith('https://') || val.startsWith('http://')))
+          val = 'http://' + val;
+
+        location.assign(
+          window.__DIP.config.prefix + window.__DIP.encodeURL(val),
+        );
+      });
+    }
   };
 
-  const on_input = async () => {
+  const on_input = async (e) => {
+    setInputvalue(e.target.value);
     if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
       return;
     }
@@ -58,29 +93,36 @@ function SearchBar() {
   };
 
   const suggestions_map = () => {
-    if (Seggustions === '') return null;
-    return (
-      <div className="suggestions p-1 w-fit rounded-md bg-primary-300">
-        {Seggustions &&
-          Seggustions.map((phrase, index) => {
-            return (
-              <div
-                className="suggestion px-1 rounded-sm bg-primary-200 hover:cursor-pointer hover:bg-primary-300 transition-all"
-                key={index}
-              >
-                <span
-                  onClick={() => {
-                    input.current.value = phrase;
-                    search_phrase(phrase);
-                  }}
+    if (navigator.userAgent.toLowerCase().indexOf('firefox') > -1) {
+      return;
+    }
+    if (inputvalue === '') {
+      console.log('empty');
+      return <></>;
+    } else {
+      return (
+        <div className="suggestions p-1 w-fit rounded-md bg-primary-300">
+          {Seggustions &&
+            Seggustions.map((phrase, index) => {
+              return (
+                <div
+                  className="suggestion px-1 rounded-sm bg-primary-200 hover:cursor-pointer hover:bg-primary-300 transition-all"
+                  key={index}
                 >
-                  {phrase}
-                </span>
-              </div>
-            );
-          })}
-      </div>
-    );
+                  <span
+                    onClick={() => {
+                      input.current.value = phrase;
+                      search_phrase(phrase);
+                    }}
+                  >
+                    {phrase}
+                  </span>
+                </div>
+              );
+            })}
+        </div>
+      );
+    }
   };
 
   return (
@@ -99,7 +141,9 @@ function SearchBar() {
             onKeyDown={(e) => {
               if (e.key === 'Enter') search();
             }}
-            onInput={on_input}
+            onInput={(e) => {
+              on_input(e);
+            }}
             ref={input}
           />
           <button className="search-button flex flex-row" onClick={search}>
@@ -112,6 +156,14 @@ function SearchBar() {
     </>
   );
 }
+
+async function worker() {
+  var a = await navigator.serviceWorker.register('/sw.js', {
+    scope: '/~',
+  });
+  return a;
+}
+
 function isUrl(val = '') {
   if (
     /^http(s?):\/\//.test(val) ||

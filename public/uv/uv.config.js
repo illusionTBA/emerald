@@ -2,7 +2,7 @@
 
 
 self.__uv$config = {
-    prefix: '/~/',
+    prefix: '/~/uv/',
     bare: 'https://bare-server-heroku.herokuapp.com/',
     encodeUrl: Ultraviolet.codec.xor.encode,
     decodeUrl: Ultraviolet.codec.xor.decode,

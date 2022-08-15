@@ -20,6 +20,9 @@ function Settings() {
   const [cloaktype, setCloaktype] = useState(
     JSON.parse(localStorage.getItem('settings')).cloaktype,
   );
+  const [proxytype, setProxytype] = useState(
+    JSON.parse(localStorage.getItem('settings')).proxy,
+  );
   const settings = JSON.parse(localStorage.getItem('settings'));
   const inFrame = () => {
     try {
@@ -40,6 +43,15 @@ function Settings() {
     } else {
       window.location.reload();
     }
+  }
+
+  function saveProxy(type) {
+    setProxytype(type.anchorKey);
+    localStorage.setItem(
+      'settings',
+      JSON.stringify({ ...settings, proxy: type.anchorKey }),
+    );
+    window.location.reload();
   }
 
   return (
@@ -64,12 +76,53 @@ function Settings() {
       <div className="flex relative h-5/6 w-2/5 bg-primary-400 rounded-md">
         <div className="flex flex-col mt-5 space-y-4 w-full h-full items-center justify-center">
           <div className="flex flex-row space-x-4 justify-center items-center">
-            <h2 className=" text-primary-100">Cloak Type:</h2>
-            <Dropdown>
+            <h2 className=" text-primary-100 text-3xl">Proxy Type:</h2>
+            <Dropdown
+              css={{
+                backgroundColor: '#52796F',
+              }}
+            >
               <Dropdown.Button
                 flat
+                css={{
+                  tt: 'capitalize',
+                  backgroundColor: '#52796F',
+                  color: '#CAD2C5',
+                }}
+              >
+                {proxytype}
+              </Dropdown.Button>
+              <Dropdown.Menu
+                aria-label="Single selection actions"
                 color="secondary"
-                css={{ tt: 'capitalize' }}
+                disallowEmptySelection
+                selectionMode="single"
+                selectedKeys={proxytype}
+                onSelectionChange={saveProxy}
+                css={{
+                  backgroundColor: '#52796F',
+                }}
+                className="border-primary-300"
+              >
+                <Dropdown.Item key="dip">dip</Dropdown.Item>
+                <Dropdown.Item key="uv">uv</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+          <div className="flex flex-row space-x-4 justify-center items-center">
+            <h2 className=" text-primary-100 text-3xl">Cloak Type:</h2>
+            <Dropdown
+              css={{
+                backgroundColor: '#52796F',
+              }}
+            >
+              <Dropdown.Button
+                flat
+                css={{
+                  tt: 'capitalize',
+                  backgroundColor: '#52796F',
+                  color: '#CAD2C5',
+                }}
               >
                 {cloaktype}
               </Dropdown.Button>
@@ -80,8 +133,14 @@ function Settings() {
                 selectionMode="single"
                 selectedKeys={cloaktype}
                 onSelectionChange={saveCloak}
+                css={{
+                  backgroundColor: '#52796F',
+                }}
+                className="border-primary-300"
               >
-                <Dropdown.Item key="none">none</Dropdown.Item>
+                <Dropdown.Item key="none" className="hover:">
+                  none
+                </Dropdown.Item>
                 <Dropdown.Item key="about:blank">about:blank</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
