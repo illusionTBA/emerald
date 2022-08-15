@@ -74,7 +74,7 @@ function Settings() {
       </motion.div>
 
       <div className="flex relative h-5/6 w-2/5 bg-primary-400 rounded-md">
-        <div className="flex flex-col mt-5 space-y-4 w-full h-full items-center justify-center">
+        <div className="flex flex-col mt-5 space-y-4 w-full h-full items-center justify-center divide-y">
           <div className="flex flex-row space-x-4 justify-center items-center">
             <h2 className=" text-primary-100 text-3xl">Proxy Type:</h2>
             <Dropdown
@@ -109,7 +109,7 @@ function Settings() {
               </Dropdown.Menu>
             </Dropdown>
           </div>
-          <div className="flex flex-row space-x-4 justify-center items-center">
+          <div className="flex flex-row space-x-4 justify-center items-center pt-2">
             <h2 className=" text-primary-100 text-3xl">Cloak Type:</h2>
             <Dropdown
               css={{
