@@ -58,9 +58,9 @@ function SearchBar() {
   };
 
   const suggestions_map = () => {
-    if (Seggustions.length === 0) return null;
+    if (Seggustions === '') return null;
     return (
-      <div className="suggestions fixed bottom-0 p-1 w-fit rounded-md bg-primary-300">
+      <div className="suggestions p-1 w-fit rounded-md bg-primary-300">
         {Seggustions &&
           Seggustions.map((phrase, index) => {
             return (
