@@ -18,7 +18,7 @@ const pageVariants = {
 
 function Settings() {
   const [cloaktype, setCloaktype] = useState(
-    JSON.parse(localStorage.getItem('settings')).cloaktype,
+    JSON.parse(localStorage.getItem('settings')).cloakType,
   );
   const [proxytype, setProxytype] = useState(
     JSON.parse(localStorage.getItem('settings')).proxy,
@@ -35,7 +35,7 @@ function Settings() {
     setCloaktype(type.anchorKey);
     localStorage.setItem(
       'settings',
-      JSON.stringify({ ...settings, cloaktype: type.anchorKey }),
+      JSON.stringify({ ...settings, cloakType: type.anchorKey }),
     );
     if (inFrame()) {
       window.open(window.location.href, '_blank');

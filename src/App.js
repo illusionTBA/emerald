@@ -33,7 +33,7 @@ function App() {
     }
 
   }
-  if (settings.cloaktype === 'about:blank') {
+  if (settings.cloakType === 'about:blank') {
     if (!inFrame() && !firefoxua) {
       const windowLocation = window.location.href;
       const ab = window.open('about:blank', '_blank');
