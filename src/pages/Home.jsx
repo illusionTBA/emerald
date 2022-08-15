@@ -15,6 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { NavLink } from 'react-router-dom';
 import BareClient from '@tomphttp/bare-client';
 import { config } from '../config';
+
 const pageTransition = {
   type: 'tween',
   ease: 'anticipate',
@@ -28,7 +29,6 @@ const pageVariants = {
 };
 
 function Home() {
-  const input = useRef(null);
   const [phone, setPhone] = useState('');
   const [messages, setMessages] = useState([]);
   const [email, setEmail] = useState('');
@@ -78,36 +78,41 @@ function Home() {
 
     setMessages(data);
   };
+
   useEffect(() => {
     const fetchEmail = async () => {
       try {
         const res = await fetch(
           'https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1',
-          {
-            headers: {},
-          },
         );
-        const data = await res.json();
-        setEmail(data);
+        if (res.status === 200) {
+          const data = await res.json();
+          setEmail(data[0]);
+          toast.success('Email successfully Set');
+        }
       } catch (error) {
-        console.log('main fetch failed using bare now...');
-        const bareres = await bare.fetch(
-          'https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1',
-          {
-            headers: {
-              'Content-Type': 'application/json',
-              'Access-Control-Allow-Origin': '*',
-            },
-          },
+        toast.error(
+          'Opps something went wrong when getting email trying again',
         );
-        const data = await bareres.json();
-        console.log(data);
+        const res = await bare.fetch(
+          'https://www.1secmail.com/api/v1/?action=genRandomMailbox&count=1',
+        );
+        if (res.status === 200) {
+          const data = await res.json();
+          setEmail(data[0]);
+          toast.success('Email successfully Set');
+        } else {
+          toast.error(
+            'Opps something went wrong try changing your bare server in settings',
+          );
+        }
       }
     };
     fetchEmail();
   }, []);
 
   const FetchEmailContent = async (id) => {
+    console.log('email: ', email);
     const emailSplit = email.split('@');
     const domain = emailSplit[1];
     const username = emailSplit[0];
@@ -122,12 +127,40 @@ function Home() {
     const emailSplit = email.split('@');
     const domain = emailSplit[1];
     const username = emailSplit[0];
-    const res = await fetch(
-      `https://www.1secmail.com/api/v1/?action=getMessages&login=${username}&domain=${domain}`,
-    );
-    const data = await res.json();
-    setEmails(data);
-    FetchEmailContent(data[0].id);
+    try {
+      const res = await fetch(
+        `https://www.1secmail.com/api/v1/?action=getMessages&login=${username}&domain=${domain}`,
+      );
+      console.log(res.status);
+
+      if (res.status === 200) {
+        const data = await res.json();
+        console.log('email data', data);
+        setEmails(data);
+        if (data.length > 0) {
+          FetchEmailContent(data[0].id);
+        }
+      } else {
+        toast.error('Failed to fetch emails trying again...');
+      }
+    } catch (error) {
+      const res = await bare.fetch(
+        `https://www.1secmail.com/api/v1/?action=getMessages&login=${username}&domain=${domain}`,
+      );
+      console.log(res.status);
+      if (res.status === 200) {
+        const data = await res.json();
+        console.log('email data', data);
+        setEmails(data);
+        if (data.length > 0) {
+          FetchEmailContent(data[0].id);
+        }
+      } else {
+        toast.error(
+          'Failed to fetch emails. try to change your bare server, if this keeps happening contact illusions#3875',
+        );
+      }
+    }
   };
 
   return (
@@ -142,12 +175,7 @@ function Home() {
       <motion.div className="flex flex-col mt-4 items-center">
         <motion.h1 className="text-6xl text-primary-200">emerald</motion.h1>
         <div className="group flex flex-row">
-          <svg className="icon" aria-hidden="true" viewBox="0 0 24 24">
-            <g>
-              <path d="M21.53 20.47l-3.66-3.66C19.195 15.24 20 13.214 20 11c0-4.97-4.03-9-9-9s-9 4.03-9 9 4.03 9 9 9c2.215 0 4.24-.804 5.808-2.13l3.66 3.66c.147.146.34.22.53.22s.385-.073.53-.22c.295-.293.295-.767.002-1.06zM3.5 11c0-4.135 3.365-7.5 7.5-7.5s7.5 3.365 7.5 7.5-3.365 7.5-7.5 7.5-7.5-3.365-7.5-7.5z"></path>
-            </g>
-          </svg>
-          <SearchBar input={input} />
+          <SearchBar />
         </div>
         <div className="flex flex-shrink flex-col items-center justify-center mt-[3rem]">
           <div className="flex flex-shrink flex-row items-center justify-center flex-wrap">
@@ -224,7 +252,7 @@ function Home() {
                 onClick={() => {
                   navigator.clipboard.writeText(email);
                   toast.success('Successfully copied Email to clipboard', {
-                    position: toast.POSITION.BOTTOM_RIGHT,
+                    position: toast.POSITION.TOP_RIGHT,
                   });
                 }}
               >
@@ -403,7 +431,17 @@ function Home() {
           </Button>
         </Modal.Footer>
       </Modal> */}
-      <ToastContainer autoClose={2000} />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </motion.div>
   );
 }

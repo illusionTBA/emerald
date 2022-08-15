@@ -11,7 +11,7 @@
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
-    "@tomphttp/bare-client": "^1.0.4-build1",
+    "@tomphttp/bare-client": "1.0.5",
     "child_process": "^1.0.2",
     "flowbite": "^1.5.1",
     "flowbite-react": "^0.1.5",
