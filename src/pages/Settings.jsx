@@ -17,13 +17,18 @@ const pageVariants = {
 };
 
 function Settings() {
+  const settings = JSON.parse(localStorage.getItem('settings'));
+  if (!settings) {
+    // redirect to /
+    window.location.href = '/';
+  }
+
   const [cloaktype, setCloaktype] = useState(
     JSON.parse(localStorage.getItem('settings')).cloakType,
   );
   const [proxytype, setProxytype] = useState(
     JSON.parse(localStorage.getItem('settings')).proxy,
   );
-  const settings = JSON.parse(localStorage.getItem('settings'));
   const inFrame = () => {
     try {
       return window.self !== window.top;

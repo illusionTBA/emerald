@@ -17,7 +17,7 @@ function App() {
         JSON.stringify({
           proxy: 'dip',
           cloakType: 'none',
-          bare: 'https://bare-server-vercel.vercel.app/',
+          bare: 'https://bare-server-heroku.herokuapp.com/',
         }),
       );
     }
@@ -42,37 +42,12 @@ function App() {
         alert('Please allow popups to use this app');
       } else {
 
-        // write a iframe to the new window
-
         ab.document.write(`<html><body style="margin: 0;"><iframe src="${windowLocation}" style="width: 100%; height: 100%; border: none;"></iframe></body></html>`);
 
-        //         ab.document.write(`
-        //         <!DOCTYPE html>
-        //         <html>
-        //           <head>
-        //             <style>
-        //               body {
-        //                 margin: 0;
-        //                 overflow: hidden;
-        //               }
-        //               </style>
-        //               </head>
-        //               <body> 
-        //               <iframe src="${windowLocation}" style="width: 100%; height: 100%; border: none;"></iframe>
-        //               </body>
-        //               </html>
-        // `);
         window.location.replace("https://google.com");
         window.close()
       }
-
-
-
     }
-
-
-
-
   }
 
   return (
