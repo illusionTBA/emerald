@@ -1,9 +1,10 @@
 /* eslint-disable no-undef */
+import { xor } from "./components/xor"
 export const config = {
     prefix: '/~/',
-    bare: 'https://bare-server-heroku.herokuapp.com/',
-    encodeUrl: Ultraviolet.codec.xor.encode,
-    decodeUrl: Ultraviolet.codec.xor.decode,
+    bare: 'https://bare.illusionss.dev/',
+    encodeUrl: xor.encode,
+    decodeUrl: xor.decode,
     handler: '/uv/uv.handler.js',
     bundle: '/uv/uv.bundle.js',
     config: '/uv/uv.config.js',
