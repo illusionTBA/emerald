@@ -1,1 +1,1 @@
-web: yarn install && yarn bstart
+web: yarn start
