@@ -13,11 +13,11 @@ const nextconfig = {
       */
       {
         source: "/bare/",
-        destination: "http://localhost:3001/",
+        destination: "http://0.0.0.0:3001/",
       },
       {
         source: "/bare/:path*/",
-        destination: "http://localhost:3001/:path*/",
+        destination: "http://0.0.0.0:3001/:path*/",
       },
     ];
   },
