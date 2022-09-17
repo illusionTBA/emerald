@@ -29,7 +29,6 @@
     "express": "^4.18.1",
     "framer-motion": "^6",
     "next": "12.2.5",
-    "rammerhead": "https://git.holy.how/attachments/7017bba8-f92a-4849-9d37-24bf47e437cb",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",

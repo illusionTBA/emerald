@@ -1,1 +1,1 @@
-web: npm i && npm run bstart
+web: yarn install && yarn bstart
