@@ -1,0 +1,23 @@
+{
+  "name": "Emerald App",
+  "short_name": "Emerald",
+  "icons": [
+    {
+      "src": "/images/192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+
+    {
+      "src": "/images/512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#2F3E46",
+  "background_color": "#2F3E46",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+}
