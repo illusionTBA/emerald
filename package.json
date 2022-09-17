@@ -10,6 +10,9 @@
     "bsw": "workbox-cli generateSW workbox-config.js",
     "bstart": "next build && concurrently -k -n \"Bare,Next\" -p \"[{name}]\" -c \"blue,magenta\" \"bare-server-node --port 3001 --host localhost -e\" \"next start -p $PORT\""
   },
+  "resolutions": {
+    "jest-jasmine2": "26.0.1"
+  },
   "dependencies": {
     "@chakra-ui/react": "^2.3.1",
     "@emotion/react": "^11",
