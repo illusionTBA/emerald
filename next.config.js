@@ -19,6 +19,10 @@ const nextconfig = {
         source: "/bare/:path*/",
         destination: "http://0.0.0.0:3001/:path*/",
       },
+      {
+        source: '/apps/',
+        destination: "https://apps.illusionss.dev/"
+      }
     ];
   },
 };

@@ -4,6 +4,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { Workbox } from "workbox-window";
 import { AnimatePresence } from "framer-motion";
+import { useSw } from "../components/hooks";
 const theme = extendTheme({
   colors: {
     base: {
@@ -28,7 +29,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     }
     const wb = new Workbox("/sw.js", { scope: "/" });
     wb.register();
+    console.log('beep')
   }, []);
+
   return (
     <div className="flex w-full h-screen bg-primary-500">
       <AnimatePresence exitBeforeEnter initial={false}>

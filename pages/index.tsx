@@ -14,8 +14,10 @@ const DynamicNavbar = dynamic(() => import("../components/ui/Navbar"), {
 import { Spinner } from "@chakra-ui/react";
 import { Suspense } from "react";
 import Wave from "react-wavify";
+import { useSw } from "../components/hooks";
 
 const Home: NextPage = () => {
+  useSw('/uv-sw.js', `/~/uv/`)
   return (
     <div className="flex w-full h-screen items-center justify-center">
       <Head>

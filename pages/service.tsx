@@ -25,7 +25,7 @@ const service: NextPage<any> = () => {
     <div className="flex flex-col relative w-full h-screen">
       <div className="flex items-center justify-center">
         {" "}
-        <Navbar isFrame={true} frameref={iframe} />
+        <Navbar isFrame={true} frameref={iframe} iref={iframe} />
       </div>
       <div className="max-w-full h-full">
         <Serviceframe url={s as any} ref={iframe} />

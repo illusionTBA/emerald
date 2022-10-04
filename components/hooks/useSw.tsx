@@ -3,12 +3,14 @@ import { useEffect, useState } from 'react';
     this hook just returns the users current settings
 */
 
-const useSw = (path: string) => {
+const useSw = (path: string, scope: string | any) => {
   useEffect(() => {
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register(path).then(
+      navigator.serviceWorker.register(path, {
+        scope: scope
+      }).then(
         function (registration) {
-          console.log(`[sw] ${path} successfuly registered`);
+          console.log(`[sw] ${path} successfuly registered with a scope of ${registration.scope}`);
         },
         function (err) {
           console.log(
@@ -19,7 +21,7 @@ const useSw = (path: string) => {
         },
       );
     }
-  }, [path]);
+  }, [path, scope]);
 };
 
 export default useSw;

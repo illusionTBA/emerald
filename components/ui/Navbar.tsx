@@ -40,10 +40,11 @@ interface App {
 
 const Navbar: NextPage<any> = (props: any) => {
   const isFrame = props.isFrame;
+  const iref = props.iref;
   const [apps, setApps] = useState<any[]>([]);
   useEffect(() => {
     const asyncfetch = async () => {
-      await fetch("/api/apps/")
+      await fetch("/apps/")
         .then((res) => res.json())
         .then((data) => setApps(data));
     };
