@@ -22,7 +22,12 @@ const nextconfig = {
       {
         source: '/apps/',
         destination: "http://0.0.0.0:4545"
+      },
+      {
+        source: '/umami.js',
+        destination: "http://0.0.0.0:4000/umami.js"
       }
+	
     ];
   },
 };
