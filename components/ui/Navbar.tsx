@@ -228,7 +228,7 @@ const Navbar: NextPage<any> = (props: any) => {
                         whileHover={{
                           scale: 0.9,
                         }}
-                        className="drop-shadow-lg"
+                        className="m-2 drop-shadow-lg"
                       >
                         <Tooltip
                           hasArrow

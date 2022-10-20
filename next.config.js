@@ -24,8 +24,12 @@ const nextconfig = {
         destination: "http://0.0.0.0:4545"
       },
       {
-        source: '/umami.js',
-        destination: "http://0.0.0.0:4000/umami.js"
+        source: '/games/',
+        destination: "http://0.0.0.0:3008"
+      },
+      {
+        source: '/games/:path*/',
+	destination: "http://0.0.0.0:3008/:path*"
       }
 	
     ];

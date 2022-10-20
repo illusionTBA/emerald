@@ -1,5 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 import type { NextPage } from "next";
+import React, { useEffect } from 'react'
 import Head from "next/head";
 import dynamic from "next/dynamic";
 const DynamicSearchbox = dynamic(
@@ -11,12 +12,22 @@ const DynamicSearchbox = dynamic(
 const DynamicNavbar = dynamic(() => import("../components/ui/Navbar"), {
   suspense: true,
 });
-import { Spinner } from "@chakra-ui/react";
+import { Spinner, useToast } from "@chakra-ui/react";
 import { Suspense } from "react";
 import Wave from "react-wavify";
 import { useSw } from "../components/hooks";
 
 const Home: NextPage = () => {
+	const toast = useToast();
+	useEffect(() => {
+		toast({
+			title: "Games",
+			description: "Later today i will be adding a games feature to emerald. These games would include flash, html games. Including emulators",
+			status: "info",
+			isClosable: true,
+			duration: 2000
+		})		
+	}, [])
   useSw('/uv-sw.js', `/~/uv/`)
   return (
     <div className="flex w-full h-screen items-center justify-center">
