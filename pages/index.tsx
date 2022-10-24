@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 import type { NextPage } from "next";
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 const DynamicSearchbox = dynamic(
@@ -12,23 +12,19 @@ const DynamicSearchbox = dynamic(
 const DynamicNavbar = dynamic(() => import("../components/ui/Navbar"), {
   suspense: true,
 });
-import { Spinner, useToast } from "@chakra-ui/react";
+import { Spinner, useToast, Text } from "@chakra-ui/react";
 import { Suspense } from "react";
 import Wave from "react-wavify";
 import { useSw } from "../components/hooks";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 const Home: NextPage = () => {
-	const toast = useToast();
-	useEffect(() => {
-		toast({
-			title: "Games",
-			description: "Later today i will be adding a games feature to emerald. These games would include flash, html games. Including emulators",
-			status: "info",
-			isClosable: true,
-			duration: 2000
-		})		
-	}, [])
-  useSw('/uv-sw.js', `/~/uv/`)
+  const bareLoad = useQuery(
+    ["bareMemory"],
+    (): Promise<any> => axios.get("/bare/").then((res) => res.data)
+  );
+  useSw("/uv-sw.js", `/~/uv/`);
   return (
     <div className="flex w-full h-screen items-center justify-center">
       <Head>
@@ -55,6 +51,18 @@ const Home: NextPage = () => {
             points: 3,
           }}
         />
+      </div>
+      <div className="absolute left-10 bottom-10">
+        {bareLoad.isLoading ? (
+          <p>loading...</p>
+        ) : (
+          <p className="text-white">
+            Bare usage:{" "}
+            <span className="text-primary-100">
+              {bareLoad.data?.memoryUsage}
+            </span>
+          </p>
+        )}
       </div>
     </div>
   );
