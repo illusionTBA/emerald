@@ -5,6 +5,8 @@ import { useEffect } from "react";
 import { Workbox } from "workbox-window";
 import { AnimatePresence } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { usePanelbear } from '@panelbear/panelbear-nextjs';
+
 const theme = extendTheme({
   colors: {
     base: {
@@ -19,6 +21,7 @@ const theme = extendTheme({
 });
 const queryClient = new QueryClient();
 function MyApp({ Component, pageProps }: AppProps) {
+  usePanelbear('GqQeDeCcykm');
   useEffect(() => {
     if (
       !("serviceWorker" in navigator) ||
