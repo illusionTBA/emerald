@@ -19,9 +19,29 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       icon: "/images/Discord.png",
     },
     {
+      title: "Instagram",
+      source: "https://instagram.com/",
+      icon: "/images/instagram.png",
+    },
+    {
       title: "Reddit",
       source: "https://reddit.com",
       icon: "/images/reddit.png",
+    },
+    {
+      title: "Mathway",
+      source: "https://www.mathway.com",
+      icon: "/images/Mathway.png",
+    },
+    {
+      title: "Goku.to - Watch movies and shows for free",
+      source: "https://goku.to/",
+      icon: "/images/goku.png",
+    },
+    {
+      title: "Zoro.to - watch anime for free",
+      source: "https://zoro.to",
+      icon: "/images/zoro.jpg",
     },
   ]);
 }

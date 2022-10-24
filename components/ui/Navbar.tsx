@@ -44,7 +44,7 @@ const Navbar: NextPage<any> = (props: any) => {
   const [apps, setApps] = useState<any[]>([]);
   useEffect(() => {
     const asyncfetch = async () => {
-      await fetch("/apps/")
+      await fetch("/api/apps/")
         .then((res) => res.json())
         .then((data) => setApps(data));
     };
