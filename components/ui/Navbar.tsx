@@ -12,7 +12,15 @@ import {
   DrawerCloseButton,
   IconButton,
   Tooltip,
-  Select,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  PopoverCloseButton,
+  PopoverAnchor,
 } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import {
@@ -58,8 +66,9 @@ const Navbar: NextPage<any> = (props: any) => {
     onOpen: onAppOpen,
     onClose: onAppClose,
   } = useDisclosure();
-  const { isOpen: isNavOpen, onToggle: onNavToggle } = useDisclosure();
+
   const [title, setTitle] = useState();
+
   if (isFrame) {
     return (
       <>
@@ -283,11 +292,23 @@ const Navbar: NextPage<any> = (props: any) => {
                   color={"base.100"}
                   placement="bottom"
                 >
-                  <div className="flex justify-center w-28 bg-primary-500 p-1 rounded-lg hover:bg-primary-300 hover:cursor-pointer transition-all">
-                    <span>
-                      <AiOutlinePlus />
-                    </span>
-                  </div>
+                  <Popover>
+                    <PopoverTrigger>
+                      <div className="flex justify-center w-28 bg-primary-500 p-1 rounded-lg hover:bg-primary-300 hover:cursor-pointer transition-all">
+                        <span>
+                          <AiOutlinePlus className="text-8xl" />
+                        </span>
+                      </div>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                      <PopoverArrow />
+                      <PopoverCloseButton />
+                      <PopoverHeader>Information</PopoverHeader>
+                      <PopoverBody>
+                        Are you sure you want to have that milkshake?
+                      </PopoverBody>
+                    </PopoverContent>
+                  </Popover>
                 </Tooltip>
               </motion.div>
             </div>

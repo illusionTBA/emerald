@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 import type { NextPage } from "next";
-import React, { useEffect } from "react";
+import React, { useEffect, useContext, useState } from "react";
 import Head from "next/head";
 import dynamic from "next/dynamic";
 import { Searchbox } from "../components/proxy";
@@ -11,13 +11,17 @@ import Wave from "react-wavify";
 import { useSw } from "../components/hooks";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-
 const Home: NextPage = () => {
   const bareLoad = useQuery(
     ["bareMemory"],
     (): Promise<any> => axios.get("/bare/").then((res) => res.data)
   );
+  const users = useQuery(
+    ["usersOnline"],
+    (): Promise<any> => axios.get("/api/users").then((res) => res.data)
+  );
   useSw("/uv-sw.js", `/~/uv/`);
+  useEffect(() => {});
   return (
     <div className="flex w-full h-screen items-center justify-center">
       <Head>
@@ -50,6 +54,15 @@ const Home: NextPage = () => {
             <span className="text-primary-100">
               {bareLoad.data?.memoryUsage}
             </span>
+          </p>
+        )}
+      </div>
+      <div className="absolute right-10 bottom-10">
+        {users.isLoading ? (
+          <p>loading...</p>
+        ) : (
+          <p className="text-white">
+            Online users: <span className="text-primary-100">{users.data}</span>
           </p>
         )}
       </div>

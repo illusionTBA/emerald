@@ -6,10 +6,20 @@ const ioHandler = (req: NextApiRequest, res: any) => {
 
     const io = new Server(res.socket.server);
 
-    io.on("connection", (socket) => {});
+    io.on("connection", (socket) => {
+      console.log(io.sockets.sockets.size);
+      socket.emit("users", io.sockets.sockets.size);
+      socket.on("user-leave", () => {
+        socket.emit("user-leave");
+      });
+    });
 
     res.socket.server.io = io;
   } else {
+    res.socket.server.io.emit(
+      "users",
+      res.socket.server.io.sockets.sockets.size
+    );
     console.log("socket.io already running");
   }
   res.end();
