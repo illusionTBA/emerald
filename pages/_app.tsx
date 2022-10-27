@@ -1,11 +1,12 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { ChakraProvider, extendTheme, useToast } from "@chakra-ui/react";
 import { useEffect } from "react";
 import { Workbox } from "workbox-window";
 import { AnimatePresence } from "framer-motion";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
+import { io } from "socket.io-client";
+let socket: any;
 const theme = extendTheme({
   colors: {
     base: {
@@ -18,8 +19,15 @@ const theme = extendTheme({
     },
   },
 });
+interface Ialert {
+  title: string;
+  description: string;
+  type?: "info" | "warning" | "success" | "error" | "loading";
+}
 const queryClient = new QueryClient();
 function MyApp({ Component, pageProps }: AppProps) {
+  const toast = useToast();
+
   useEffect(() => {
     if (
       !("serviceWorker" in navigator) ||
@@ -32,6 +40,31 @@ function MyApp({ Component, pageProps }: AppProps) {
     wb.register();
     console.log("beep");
   }, []);
+  useEffect(() => {
+    fetch("/api/socket/").finally(() => {
+      const socket = io();
+
+      socket.on("connect", () => {
+        console.log("connect");
+      });
+
+      socket.on("alert", (options: Ialert) => {
+        // console.log("alert", options);
+        toast({
+          position: "bottom-right",
+          title: options.title,
+          description: options.description,
+          status: options.type ? options.type : "info",
+          duration: 2000,
+          isClosable: true,
+        });
+      });
+
+      socket.on("disconnect", () => {
+        console.log("disconnect");
+      });
+    });
+  }, []); // Added [] as useEffect filter so it will be executed only once, when component is mounted
 
   return (
     <div className="flex w-full h-screen bg-primary-500">

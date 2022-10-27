@@ -3,15 +3,8 @@ import type { NextPage } from "next";
 import React, { useEffect } from "react";
 import Head from "next/head";
 import dynamic from "next/dynamic";
-const DynamicSearchbox = dynamic(
-  () => import("../components/proxy/Searchbox"),
-  {
-    suspense: true,
-  }
-);
-const DynamicNavbar = dynamic(() => import("../components/ui/Navbar"), {
-  suspense: true,
-});
+import { Searchbox } from "../components/proxy";
+import { Navbar } from "../components/ui";
 import { Spinner, useToast, Text } from "@chakra-ui/react";
 import { Suspense } from "react";
 import Wave from "react-wavify";
@@ -34,12 +27,8 @@ const Home: NextPage = () => {
           content="Emerald is an excelent utility service that provides hundreds of things . An astral service. "
         />
       </Head>
-      <Suspense fallback={<Spinner className="fixed top-0" />}>
-        <DynamicNavbar isFrame={false} />
-      </Suspense>
-      <Suspense fallback={<Spinner />}>
-        <DynamicSearchbox />
-      </Suspense>
+      <Navbar />
+      <Searchbox />
       <div className="fixed bottom-0 w-full">
         <Wave
           fill="#354F52"

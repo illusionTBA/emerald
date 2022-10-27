@@ -1,12 +1,7 @@
-:root {
-  --primary-100: #cad2c5;
-  --primary-200: #84a98c;
-  --primary-300: #52796f;
-  --primary-400: #354f52;
-  --primary-500: #2f3e46;
-  --primary-100: #18262e;
-}
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+  @apply bg-primary-600;
+}

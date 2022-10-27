@@ -24,7 +24,8 @@ import { MdExitToApp as Exit } from "react-icons/md";
 import { FaCog } from "react-icons/fa";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { IoIosApps } from "react-icons/io";
-import { GiHamburgerMenu } from "react-icons/gi";
+import { AiOutlinePlus } from "react-icons/ai";
+import { GiConsoleController, GiHamburgerMenu } from "react-icons/gi";
 import { xor } from "../utils";
 import { Suspense } from "react";
 import dynamic from "next/dynamic";
@@ -176,6 +177,14 @@ const Navbar: NextPage<any> = (props: any) => {
           </div>
 
           <div className="space-x-3 flex flex-row">
+            {/* <Button
+              colorScheme={"whatsapp"}
+              variant="outline"
+              leftIcon={<GiConsoleController />}
+              onClick={() => Router.push("/games")}
+            >
+              Games
+            </Button> */}
             <Button
               colorScheme={"twitter"}
               variant="outline"
@@ -184,26 +193,24 @@ const Navbar: NextPage<any> = (props: any) => {
             >
               Apps
             </Button>
-            <Tooltip label={'soon'} placement={'bottom'}>
-            <Button
-              colorScheme={"base"}
-              variant="outline"
-              leftIcon={<BsFillPeopleFill />}
-            >
-              Theater
-            </Button>
+            <Tooltip label={"soon"} placement={"bottom"}>
+              <Button
+                colorScheme={"base"}
+                variant="outline"
+                leftIcon={<BsFillPeopleFill />}
+              >
+                Theater
+              </Button>
             </Tooltip>
-            <Tooltip label={'soon'} placement={'bottom'}>
-            <Button
-              colorScheme={"base"}
-              variant="outline"
-              leftIcon={<FaCog />}
-            >
-              Settings
-            </Button>
+            <Tooltip label={"soon"} placement={"bottom"}>
+              <Button
+                colorScheme={"base"}
+                variant="outline"
+                leftIcon={<FaCog />}
+              >
+                Settings
+              </Button>
             </Tooltip>
-
-
           </div>
         </div>
       </motion.div>
@@ -260,6 +267,29 @@ const Navbar: NextPage<any> = (props: any) => {
                     );
                   })
                 : null}
+              <motion.div
+                whileFocus={{
+                  scale: 0.9,
+                }}
+                whileHover={{
+                  scale: 0.9,
+                }}
+                className="m-2 drop-shadow-lg"
+              >
+                <Tooltip
+                  hasArrow
+                  label={"add app"}
+                  bg="base.300"
+                  color={"base.100"}
+                  placement="bottom"
+                >
+                  <div className="flex justify-center w-28 bg-primary-500 p-1 rounded-lg hover:bg-primary-300 hover:cursor-pointer transition-all">
+                    <span>
+                      <AiOutlinePlus />
+                    </span>
+                  </div>
+                </Tooltip>
+              </motion.div>
             </div>
           </DrawerBody>
         </DrawerContent>
