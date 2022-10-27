@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Button, Input } from "@chakra-ui/react";
 
-export default () => {
+export default function Dash() {
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
 
@@ -35,4 +35,4 @@ export default () => {
       <Button onClick={sendAlert}>Send</Button>
     </div>
   );
-};
+}
