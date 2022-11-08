@@ -1,26 +1,34 @@
 /* eslint-disable react/no-unknown-property */
-import type { NextPage } from "next";
-import React, { useEffect, useContext, useState } from "react";
-import Head from "next/head";
-import dynamic from "next/dynamic";
-import { Searchbox } from "../components/proxy";
-import { Navbar } from "../components/ui";
-import { Spinner, useToast, Text } from "@chakra-ui/react";
-import { Suspense } from "react";
-import Wave from "react-wavify";
-import { useSw } from "../components/hooks";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import type { NextPage } from 'next';
+import React, { useEffect, useContext, useState } from 'react';
+import Head from 'next/head';
+import dynamic from 'next/dynamic';
+import { Searchbox } from '../components/proxy';
+import { Navbar } from '../components/ui';
+import { Spinner, useToast, Text } from '@chakra-ui/react';
+import { Suspense } from 'react';
+import Wave from 'react-wavify';
+import { useSw } from '../components/hooks';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 const Home: NextPage = () => {
   const bareLoad = useQuery(
-    ["bareMemory"],
-    (): Promise<any> => axios.get("/bare/").then((res) => res.data)
+    ['bareMemory'],
+    (): Promise<any> =>
+      axios
+        .get('/bare/')
+        .then((res) => res.data)
+        .catch((e) => {
+          if (e) {
+            return;
+          }
+        }),
   );
   const users = useQuery(
-    ["usersOnline"],
-    (): Promise<any> => axios.get("/api/users").then((res) => res.data)
+    ['usersOnline'],
+    (): Promise<any> => axios.get('/api/users').then((res) => res.data),
   );
-  useSw("/uv-sw.js", `/~/uv/`);
+  useSw('/uv-sw.js', '/~/uv/');
   useEffect(() => {});
   return (
     <div className="flex w-full h-screen items-center justify-center">
@@ -50,7 +58,7 @@ const Home: NextPage = () => {
           <p>loading...</p>
         ) : (
           <p className="text-white">
-            Bare usage:{" "}
+            Bare usage:{' '}
             <span className="text-primary-100">
               {bareLoad.data?.memoryUsage}
             </span>

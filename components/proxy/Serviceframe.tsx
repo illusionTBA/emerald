@@ -1,9 +1,9 @@
-import type { NextPage } from "next";
-import { useEffect, useState } from "react";
-import useSettings from "../hooks/useSettings";
-import { Spinner, Text } from "@chakra-ui/react";
-import React from "react";
-import { xor } from "../utils";
+import type { NextPage } from 'next';
+import { useEffect, useState } from 'react';
+import useSettings from '../hooks/useSettings';
+import { Spinner, Text } from '@chakra-ui/react';
+import React from 'react';
+import { isUrl, xor } from '../utils';
 interface Props {
   title?: string;
   url: string;
@@ -19,19 +19,18 @@ const Serviceframe = (props: Props, ref: any) => {
       setLoading(false);
     }, 1500);
   }, []);
-
   return (
     <div className="flex w-full h-full">
       {loading ? (
         <div className="flex w-full h-full items-center justify-center flex-col space-y-2">
-          <Text color={"base.100"} fontSize={"4xl"}>
+          <Text color={'base.100'} fontSize={'4xl'}>
             Loading {proxy}
           </Text>
-          <Spinner colorScheme={"green"} label="Loading..." size={"lg"} />
+          <Spinner colorScheme={'green'} label="Loading..." size={'lg'} />
         </div>
       ) : null}
       <iframe
-        width={"100%"}
+        width={'100%'}
         ref={ref}
         className={loading ? `hidden` : `border-none`}
         height="100%"

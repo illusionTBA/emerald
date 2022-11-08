@@ -1,15 +1,15 @@
-import { useEffect, useState, useRef } from "react";
-import { Button, Input } from "@chakra-ui/react";
+import { useEffect, useState, useRef } from 'react';
+import { Button, Input } from '@chakra-ui/react';
 
 export default function Dash() {
   const [title, setTitle] = useState();
   const [description, setDescription] = useState();
 
   const sendAlert = async () => {
-    const resp = await fetch("/api/alert", {
-      method: "POST",
+    const resp = await fetch('/api/alert', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         title,
@@ -17,11 +17,11 @@ export default function Dash() {
       }),
     });
     if (resp.ok) {
-      console.log("sent");
+      console.log('sent');
     }
   };
   return (
-    <div className="flex w-full h-screen items-center justify-center flex-col space-y-5">
+    <div className="flex  w-full h-screen items-center justify-center flex-col space-y-5">
       <Input
         placeholder="title"
         width={200}

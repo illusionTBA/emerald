@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import type { NextPage } from "next";
-import Image from "next/image";
-import { useDisclosure, Text, Button, Spinner } from "@chakra-ui/react";
+import React, { useEffect, useState } from 'react';
+import type { NextPage } from 'next';
+import Image from 'next/image';
+import { useDisclosure, Text, Button, Spinner, Stack } from '@chakra-ui/react';
 import {
   Drawer,
   DrawerBody,
@@ -17,49 +17,75 @@ import {
   PopoverContent,
   PopoverHeader,
   PopoverBody,
-  PopoverFooter,
   PopoverArrow,
   PopoverCloseButton,
-  PopoverAnchor,
-} from "@chakra-ui/react";
-import { motion } from "framer-motion";
+  Input,
+  useToast,
+} from '@chakra-ui/react';
+import { motion } from 'framer-motion';
 import {
   AiOutlineReload as Reload,
   AiOutlineTool as Devtools,
-} from "react-icons/ai";
-import { BsBookmark as Bookmark } from "react-icons/bs";
-import { MdExitToApp as Exit } from "react-icons/md";
-import { FaCog } from "react-icons/fa";
-import { BsFillPeopleFill } from "react-icons/bs";
-import { IoIosApps } from "react-icons/io";
-import { AiOutlinePlus } from "react-icons/ai";
-import { GiConsoleController, GiHamburgerMenu } from "react-icons/gi";
-import { xor } from "../utils";
-import { Suspense } from "react";
-import dynamic from "next/dynamic";
-const DynamicSearchbox = dynamic(() => import("../proxy/Searchbox"), {
+} from 'react-icons/ai';
+import { BsBookmark as Bookmark } from 'react-icons/bs';
+import { MdExitToApp as Exit } from 'react-icons/md';
+import { FaCog } from 'react-icons/fa';
+import { BsFillPeopleFill } from 'react-icons/bs';
+import { IoIosApps } from 'react-icons/io';
+import { AiOutlinePlus } from 'react-icons/ai';
+import { GiHamburgerMenu } from 'react-icons/gi';
+import { xor, isUrl } from '../utils';
+import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
+const DynamicSearchbox = dynamic(() => import('../proxy/Searchbox'), {
   suspense: true,
 });
-import Router from "next/router";
+import { useApps } from '../hooks';
+import Router from 'next/router';
 interface App {
   title: string;
   icon: string | React.ReactNode;
   source: string;
 }
 
-const Navbar: NextPage<any> = (props: any) => {
+const Navbar = (props: any) => {
   const isFrame = props.isFrame;
   const iref = props.iref;
   const [apps, setApps] = useState<any[]>([]);
+  const [appInput, setAppInput] = useState('');
+  const [appTitle, setAppTitle] = useState('');
+  const { apps: getApps, createApp } = useApps();
   useEffect(() => {
     const asyncfetch = async () => {
-      await fetch("/api/apps/")
+      await fetch('/api/apps/')
         .then((res) => res.json())
         .then((data) => setApps(data));
     };
 
     asyncfetch();
   }, []);
+  const toast = useToast();
+  const createAppCheck = (app: { url: string; title: string }) => {
+    if (!app.url.startsWith('https://') || app.url.startsWith('http://')) {
+      toast({
+        title: 'Invalid URL',
+        description: 'Please enter https:// or http://',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    } else if (!isUrl(app.url)) {
+      toast({
+        title: 'Invalid URL',
+        description: 'Please enter a valid URL',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    } else {
+      createApp(app);
+    }
+  };
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isAppOpen,
@@ -76,7 +102,7 @@ const Navbar: NextPage<any> = (props: any) => {
           <div className="flex items-center m-2 w-full h-full justify-between">
             <div className="flex items-center justify-center flex-row space-x-6">
               <Image
-                src={"/images/emerald.png"}
+                src={'/images/emerald.png'}
                 alt="emerald"
                 width={50}
                 height={50}
@@ -92,63 +118,63 @@ const Navbar: NextPage<any> = (props: any) => {
             <div className="space-x-3 flex flex-row mr-5">
               <Tooltip
                 hasArrow
-                label={"Soon"}
+                label={'Soon'}
                 bg="base.300"
-                color={"base.100"}
+                color={'base.100'}
                 placement="bottom"
               >
                 <IconButton
                   aria-label="Reload page"
-                  colorScheme={"base"}
-                  textColor={"base.400"}
-                  fontSize={"2xl"}
+                  colorScheme={'base'}
+                  textColor={'base.400'}
+                  fontSize={'2xl'}
                   icon={<Bookmark />}
                 />
               </Tooltip>
               <Tooltip
                 hasArrow
-                label={"Soon"}
+                label={'Soon'}
                 bg="base.300"
-                color={"base.100"}
+                color={'base.100'}
                 placement="bottom"
               >
                 <IconButton
                   aria-label="Open a chrome like devtool menu"
-                  colorScheme={"base"}
-                  textColor={"base.400"}
-                  fontSize={"2xl"}
+                  colorScheme={'base'}
+                  textColor={'base.400'}
+                  fontSize={'2xl'}
                   icon={<Devtools />}
                 />
               </Tooltip>
               <Tooltip
                 hasArrow
-                label={"Soon"}
+                label={'Soon'}
                 bg="base.300"
-                color={"base.100"}
+                color={'base.100'}
                 placement="bottom"
               >
                 <IconButton
                   aria-label="Reload page"
-                  colorScheme={"base"}
-                  textColor={"base.400"}
-                  fontSize={"2xl"}
+                  colorScheme={'base'}
+                  textColor={'base.400'}
+                  fontSize={'2xl'}
                   icon={<Reload />}
                 />
               </Tooltip>
               <Tooltip
                 hasArrow
-                label={"Exit"}
+                label={'Exit'}
                 bg="base.300"
-                color={"base.100"}
+                color={'base.100'}
                 placement="bottom"
               >
                 <IconButton
                   aria-label="Exit"
-                  colorScheme={"base"}
-                  fontSize={"2xl"}
+                  colorScheme={'base'}
+                  fontSize={'2xl'}
                   icon={<Exit />}
                   onClick={() => {
-                    Router.push("/");
+                    Router.push('/');
                   }}
                 />
               </Tooltip>
@@ -169,12 +195,12 @@ const Navbar: NextPage<any> = (props: any) => {
         exit={{
           scale: 1,
         }}
-        transition={{ type: "linear" }}
+        transition={{ type: 'linear' }}
       >
         <div className="flex items-center m-2 w-full h-full justify-between">
           <div className="flex items-center justify-center flex-row space-x-6">
             <Image
-              src={"/images/emerald.png"}
+              src={'/images/emerald.png'}
               alt="emerald"
               width={50}
               height={50}
@@ -187,33 +213,33 @@ const Navbar: NextPage<any> = (props: any) => {
 
           <div className="space-x-3 flex flex-row">
             {/* <Button
-              colorScheme={"whatsapp"}
+              colorScheme={'cyan'}
               variant="outline"
-              leftIcon={<GiConsoleController />}
-              onClick={() => Router.push("/games")}
+              leftIcon={<BsFillChatSquareDotsFill />}
+              onClick={() => Router.push('/chat')}
             >
-              Games
+              Chat
             </Button> */}
             <Button
-              colorScheme={"twitter"}
+              colorScheme={'twitter'}
               variant="outline"
               leftIcon={<IoIosApps />}
               onClick={onAppOpen}
             >
               Apps
             </Button>
-            <Tooltip label={"soon"} placement={"bottom"}>
+            <Tooltip label={'soon'} placement={'bottom'}>
               <Button
-                colorScheme={"base"}
+                colorScheme={'base'}
                 variant="outline"
                 leftIcon={<BsFillPeopleFill />}
               >
                 Theater
               </Button>
             </Tooltip>
-            <Tooltip label={"soon"} placement={"bottom"}>
+            <Tooltip label={'soon'} placement={'bottom'}>
               <Button
-                colorScheme={"base"}
+                colorScheme={'base'}
                 variant="outline"
                 leftIcon={<FaCog />}
               >
@@ -224,12 +250,12 @@ const Navbar: NextPage<any> = (props: any) => {
         </div>
       </motion.div>
       {/* App drawer */}
-      <Drawer onClose={onAppClose} isOpen={isAppOpen} size={"xl"}>
+      <Drawer onClose={onAppClose} isOpen={isAppOpen} size={'xl'}>
         <DrawerOverlay />
-        <DrawerContent backgroundColor={"#354f52"} textColor={"base.100"}>
+        <DrawerContent backgroundColor={'#354f52'} textColor={'base.100'}>
           <DrawerCloseButton />
           <DrawerHeader>
-            <Text fontSize={"4xl"}>Your Apps</Text>
+            <Text fontSize={'4xl'}>Your Apps</Text>
           </DrawerHeader>
           <DrawerBody>
             <div className="flex space-x-4 flex-wrap">
@@ -250,14 +276,14 @@ const Navbar: NextPage<any> = (props: any) => {
                           hasArrow
                           label={app.title}
                           bg="base.300"
-                          color={"base.100"}
+                          color={'base.100'}
                           placement="bottom"
                         >
                           <div
                             className="flex justify-center w-28 bg-primary-500 p-1 rounded-lg hover:bg-primary-300 hover:cursor-pointer transition-all"
                             onClick={() =>
                               Router.push({
-                                pathname: "/service",
+                                pathname: '/service',
                                 query: { s: xor.encode(app.source) },
                               })
                             }
@@ -276,20 +302,57 @@ const Navbar: NextPage<any> = (props: any) => {
                     );
                   })
                 : null}
-              <motion.div
-                whileFocus={{
-                  scale: 0.9,
-                }}
-                whileHover={{
-                  scale: 0.9,
-                }}
-                className="m-2 drop-shadow-lg"
-              >
+              {Array.isArray(getApps) ? (
+                getApps.map<any>((app: any, i: number) => {
+                  return (
+                    <motion.div
+                      key={i}
+                      whileFocus={{
+                        scale: 0.9,
+                      }}
+                      whileHover={{
+                        scale: 0.9,
+                      }}
+                      className="m-2 drop-shadow-lg"
+                    >
+                      <Tooltip
+                        hasArrow
+                        label={app.title}
+                        bg="base.300"
+                        color={'base.100'}
+                        placement="bottom"
+                      >
+                        <div
+                          className="flex justify-center w-28 bg-primary-500 p-1 rounded-lg hover:bg-primary-300 hover:cursor-pointer transition-all"
+                          onClick={() =>
+                            Router.push({
+                              pathname: '/service',
+                              query: { s: xor.encode(app.url) },
+                            })
+                          }
+                        >
+                          <span>
+                            <Image
+                              src={'/images/world.svg'}
+                              alt={app.title}
+                              width={200}
+                              height={200}
+                            />
+                          </span>
+                        </div>
+                      </Tooltip>
+                    </motion.div>
+                  );
+                })
+              ) : (
+                <h1>no apps</h1>
+              )}
+              <motion.div className="m-2 drop-shadow-lg">
                 <Tooltip
                   hasArrow
-                  label={"add app"}
+                  label={'add app'}
                   bg="base.300"
-                  color={"base.100"}
+                  color={'base.100'}
                   placement="bottom"
                 >
                   <Popover>
@@ -300,12 +363,49 @@ const Navbar: NextPage<any> = (props: any) => {
                         </span>
                       </div>
                     </PopoverTrigger>
-                    <PopoverContent>
+                    <PopoverContent bg="#354F52">
                       <PopoverArrow />
                       <PopoverCloseButton />
-                      <PopoverHeader>Information</PopoverHeader>
+                      <PopoverHeader className="text-primary-100">
+                        Add Custom app
+                      </PopoverHeader>
                       <PopoverBody>
-                        Are you sure you want to have that milkshake?
+                        <Stack direction={'column'}>
+                          <Input
+                            value={appTitle}
+                            onChange={(e) => setAppTitle(e.target.value)}
+                            placeholder="App title"
+                          />
+                          <Input
+                            value={appInput}
+                            onChange={(e) => setAppInput(e.target.value)}
+                            placeholder="App url"
+                          />
+
+                          <Button
+                            bg={'#354F52'}
+                            __css={{
+                              '&:hover': {
+                                bg: '#52796F',
+                              },
+                              height: '2rem',
+                              transition: 'all 0.2s ease-in-out',
+                              borderRadius: '0.25rem',
+                              '&:active': {
+                                boxShadow: 'none',
+                                bg: '#52796F',
+                              },
+                            }}
+                            onClick={() => {
+                              createAppCheck({
+                                url: appInput,
+                                title: appTitle,
+                              });
+                            }}
+                          >
+                            Add
+                          </Button>
+                        </Stack>
                       </PopoverBody>
                     </PopoverContent>
                   </Popover>
@@ -328,30 +428,30 @@ const Navbar: NextPage<any> = (props: any) => {
           colorScheme="green"
         >
           <DrawerOverlay />
-          <DrawerContent backgroundColor={"#354f52"} textColor={"base.100"}>
+          <DrawerContent backgroundColor={'#354f52'} textColor={'base.100'}>
             <DrawerCloseButton />
             <DrawerHeader>
-              <Text fontSize={"3xl"}>Emerald</Text>
+              <Text fontSize={'3xl'}>Emerald</Text>
             </DrawerHeader>
 
             <DrawerBody>
               <div className="space-y-3 flex flex-col">
                 <Button
-                  colorScheme={"twitter"}
+                  colorScheme={'twitter'}
                   variant="outline"
                   leftIcon={<IoIosApps />}
                 >
                   Apps
                 </Button>
                 <Button
-                  colorScheme={"whiteAlpha"}
+                  colorScheme={'whiteAlpha'}
                   variant="outline"
                   leftIcon={<BsFillPeopleFill />}
                 >
                   Theater
                 </Button>
                 <Button
-                  colorScheme={"green"}
+                  colorScheme={'green'}
                   variant="outline"
                   leftIcon={<FaCog />}
                 >
@@ -361,7 +461,7 @@ const Navbar: NextPage<any> = (props: any) => {
             </DrawerBody>
 
             <DrawerFooter>
-              <Text color={"gray"}>© Emerald 2022-2023</Text>
+              <Text color={'gray'}>© Emerald 2022-2023</Text>
             </DrawerFooter>
           </DrawerContent>
         </Drawer>
@@ -371,3 +471,12 @@ const Navbar: NextPage<any> = (props: any) => {
 };
 
 export default Navbar;
+function toast(arg0: {
+  title: string;
+  description: string;
+  status: string;
+  duration: number;
+  isClosable: boolean;
+}) {
+  throw new Error('Function not implemented.');
+}

@@ -3,7 +3,7 @@
 const nextconfig = {
   reactStrictMode: true,
   swcMinify: true,
-  distDir: "build",
+  distDir: 'build',
   productionBrowserSourceMaps: false,
   trailingSlash: true,
   rewrites() {
@@ -12,12 +12,13 @@ const nextconfig = {
         instead of the built in one just replace the " destination " value (leave the slashes)
       */
       {
-        source: "/bare/",
-        destination: "http://0.0.0.0:7000/",
+        source: '/bare/',
+        destination: 'http://0.0.0.0:7000/' || 'http://0.0.0.0:3001/',
       },
       {
-        source: "/bare/:path*/",
-        destination: "http://0.0.0.0:3001/:path*/",
+        source: '/bare/:path*/',
+        destination:
+          'http://0.0.0.0:3001/:path*/' || 'http://0.0.0.0:3001/:path*/',
       },
     ];
   },
