@@ -302,51 +302,49 @@ const Navbar = (props: any) => {
                     );
                   })
                 : null}
-              {Array.isArray(getApps) ? (
-                getApps.map<any>((app: any, i: number) => {
-                  return (
-                    <motion.div
-                      key={i}
-                      whileFocus={{
-                        scale: 0.9,
-                      }}
-                      whileHover={{
-                        scale: 0.9,
-                      }}
-                      className="m-2 drop-shadow-lg"
-                    >
-                      <Tooltip
-                        hasArrow
-                        label={app.title}
-                        bg="base.300"
-                        color={'base.100'}
-                        placement="bottom"
+              {Array.isArray(getApps)
+                ? getApps.map<any>((app: any, i: number) => {
+                    return (
+                      <motion.div
+                        key={i}
+                        whileFocus={{
+                          scale: 0.9,
+                        }}
+                        whileHover={{
+                          scale: 0.9,
+                        }}
+                        className="m-2 drop-shadow-lg"
                       >
-                        <div
-                          className="flex justify-center w-28 bg-primary-500 p-1 rounded-lg hover:bg-primary-300 hover:cursor-pointer transition-all"
-                          onClick={() =>
-                            Router.push({
-                              pathname: '/service',
-                              query: { s: xor.encode(app.url) },
-                            })
-                          }
+                        <Tooltip
+                          hasArrow
+                          label={app.title}
+                          bg="base.300"
+                          color={'base.100'}
+                          placement="bottom"
                         >
-                          <span>
-                            <Image
-                              src={'/images/world.svg'}
-                              alt={app.title}
-                              width={200}
-                              height={200}
-                            />
-                          </span>
-                        </div>
-                      </Tooltip>
-                    </motion.div>
-                  );
-                })
-              ) : (
-                <h1>no apps</h1>
-              )}
+                          <div
+                            className="flex justify-center w-28 bg-primary-500 p-1 rounded-lg hover:bg-primary-300 hover:cursor-pointer transition-all"
+                            onClick={() =>
+                              Router.push({
+                                pathname: '/service',
+                                query: { s: xor.encode(app.url) },
+                              })
+                            }
+                          >
+                            <span>
+                              <Image
+                                src={'/images/world.svg'}
+                                alt={app.title}
+                                width={200}
+                                height={200}
+                              />
+                            </span>
+                          </div>
+                        </Tooltip>
+                      </motion.div>
+                    );
+                  })
+                : null}
               <motion.div className="m-2 drop-shadow-lg">
                 <Tooltip
                   hasArrow
