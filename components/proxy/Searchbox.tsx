@@ -70,7 +70,7 @@ const Searchbox: NextPage = () => {
     }
     let url = input.current.value;
     console.log(url);
-    if (!isUrl(url)) url = engine + url;
+    if (!isUrl(url)) url = "https://duckduckgo.com/?q=" + url;
     else if (!(url.startsWith("https://") || url.startsWith("http://")))
       url = "http://" + url;
     console.log(url);
