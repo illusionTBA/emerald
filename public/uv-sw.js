@@ -1,6 +1,6 @@
-importScripts('/proxies/uv.bundle.js');
-importScripts('/proxies/uv.config.js');
-importScripts('/proxies/uv.sw.js');
+importScripts('/proxies/uv/uv.bundle.js');
+importScripts('/proxies/uv/uv.config.js');
+importScripts('/proxies/uv/uv.sw.js');
 
 const sw = new UVServiceWorker();
 
