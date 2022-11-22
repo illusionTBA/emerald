@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import type { NextPage } from 'next';
 import Image from 'next/image';
 import { useDisclosure, Text, Button, Spinner, Stack } from '@chakra-ui/react';
 import {
@@ -50,7 +49,6 @@ interface App {
 
 const Navbar = (props: any) => {
   const isFrame = props.isFrame;
-  const iref = props.iref;
   const [apps, setApps] = useState<any[]>([]);
   const [appInput, setAppInput] = useState('');
   const [appTitle, setAppTitle] = useState('');

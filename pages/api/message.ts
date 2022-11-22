@@ -1,6 +1,6 @@
 import { NextApiRequest } from 'next';
 
-export default (req: NextApiRequest, res: any) => {
+const messageHandler = (req: NextApiRequest, res: any) => {
   if (req.method === 'POST') {
     // get message
     const options = req.body;
@@ -12,3 +12,5 @@ export default (req: NextApiRequest, res: any) => {
     res.status(201).json(options);
   }
 };
+
+export default messageHandler;
