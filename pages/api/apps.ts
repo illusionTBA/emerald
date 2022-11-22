@@ -9,6 +9,11 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       icon: "/images/youtube.png",
     },
     {
+      title: "invidious - Youtube alternative",
+      source: "https://vid.puffyan.us",
+      icon: "/images/invidious.png",
+    },
+    {
       title: "Spotify",
       source: "https://open.spotify.com/",
       icon: "/images/Spotify.png",
