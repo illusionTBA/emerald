@@ -4,11 +4,21 @@ import { Serviceframe } from '../components/proxy';
 import { useRouter } from 'next/router';
 import React, { useEffect, useRef } from 'react';
 import { Navbar } from '../components/ui';
+import { GetServerSideProps, NextPage } from 'next';
 
-const Service: React.FC = () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  return {
+    props: {
+      s: context.query.s,
+    },
+  };
+};
+
+const Service: NextPage<{
+  s: string;
+}> = ({ s }) => {
   const iframe = useRef<HTMLIFrameElement>(null);
-  const router = useRouter();
-  const { s } = router.query;
+  console.log(s);
   useEffect(() => {
     if (iframe.current != null) {
       console.log(iframe.current.src);
