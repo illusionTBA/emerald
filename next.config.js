@@ -3,7 +3,6 @@
 const nextconfig = {
   reactStrictMode: true,
   swcMinify: true,
-  distDir: 'build',
   productionBrowserSourceMaps: false,
   trailingSlash: true,
   rewrites() {
@@ -13,11 +12,11 @@ const nextconfig = {
       */
       {
         source: '/bare/',
-        destination: 'http://0.0.0.0:7000/',
+        destination: 'http://0.0.0.0:3001/',
       },
       {
         source: '/bare/:path*/',
-        destination: 'http://0.0.0.0:7000/:path*/',
+        destination: 'http://0.0.0.0:3001/:path*/',
       },
     ];
   },

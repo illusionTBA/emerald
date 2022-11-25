@@ -176,10 +176,6 @@ const Navbar = (props: any) => {
                   }}
                 />
               </Tooltip>
-              {/* 
-                  browser control buttons
-                  reload, exit, quick proxy change etc
-            */}
             </div>
           </div>
         </div>
@@ -210,14 +206,6 @@ const Navbar = (props: any) => {
           </div>
 
           <div className="space-x-3 flex flex-row">
-            {/* <Button
-              colorScheme={'cyan'}
-              variant="outline"
-              leftIcon={<BsFillChatSquareDotsFill />}
-              onClick={() => Router.push('/chat')}
-            >
-              Chat
-            </Button> */}
             <Button
               colorScheme={'twitter'}
               variant="outline"
@@ -256,7 +244,7 @@ const Navbar = (props: any) => {
             <Text fontSize={'4xl'}>Your Apps</Text>
           </DrawerHeader>
           <DrawerBody>
-            <div className="flex space-x-4 flex-wrap">
+            <div className="flex space-x-5 flex-wrap">
               {Array.isArray(apps)
                 ? apps.map<any>((app: App, i) => {
                     return (
@@ -268,7 +256,7 @@ const Navbar = (props: any) => {
                         whileHover={{
                           scale: 0.9,
                         }}
-                        className="m-2 drop-shadow-lg"
+                        className="mx-2 my-2 drop-shadow-lg"
                       >
                         <Tooltip
                           hasArrow
@@ -467,12 +455,3 @@ const Navbar = (props: any) => {
 };
 
 export default Navbar;
-function toast(arg0: {
-  title: string;
-  description: string;
-  status: string;
-  duration: number;
-  isClosable: boolean;
-}) {
-  throw new Error('Function not implemented.');
-}

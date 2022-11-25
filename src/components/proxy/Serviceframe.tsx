@@ -1,16 +1,8 @@
-import type { NextPage } from 'next';
 import { useEffect, useState } from 'react';
 import useSettings from '../hooks/useSettings';
 import { Spinner, Text } from '@chakra-ui/react';
 import React from 'react';
-import { isUrl, xor } from '../utils';
-interface Props {
-  title?: string;
-  url: string;
-}
-
-const Serviceframe = (props: Props, ref: any) => {
-  let url = props.url;
+const Serviceframe = ({ url }: { url: string }) => {
   const [proxy, cloak, engine] = useSettings();
   const [loading, setLoading] = useState(true);
 
@@ -26,12 +18,11 @@ const Serviceframe = (props: Props, ref: any) => {
           <Text color={'base.100'} fontSize={'4xl'}>
             Loading {proxy}
           </Text>
-          <Spinner colorScheme={'green'} label="Loading..." size={'lg'} />
+          <Spinner colorScheme={'green'} label="Loading..." size={'xl'} />
         </div>
       ) : null}
       <iframe
         width={'100%'}
-        ref={ref}
         className={loading ? `hidden` : `border-none`}
         height="100%"
         src={`/~/${proxy}/${url}`}
