@@ -17,7 +17,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 const Service: NextPage<{
   s: string;
 }> = ({ s }) => {
-  const iframe = useRef<HTMLIFrameElement>(null);
   return (
     <div className="flex flex-col relative w-full h-screen">
       <div className="flex items-center justify-center">
@@ -26,7 +25,7 @@ const Service: NextPage<{
         </Suspense>
       </div>
       <div className="max-w-full h-full">
-        <Serviceframe url={s} ref={iframe} />
+        <Serviceframe url={s} />
       </div>
     </div>
   );

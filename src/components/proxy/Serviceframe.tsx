@@ -2,13 +2,7 @@ import { useEffect, useState } from 'react';
 import useSettings from '../hooks/useSettings';
 import { Spinner, Text } from '@chakra-ui/react';
 import React from 'react';
-const Serviceframe = ({
-  url,
-  ref,
-}: {
-  url: string;
-  ref?: React.RefObject<HTMLIFrameElement>;
-}) => {
+const Serviceframe = ({ url }: { url: string }) => {
   const [proxy, cloak, engine] = useSettings();
   const [loading, setLoading] = useState(true);
 
@@ -29,7 +23,6 @@ const Serviceframe = ({
       ) : null}
       <iframe
         width={'100%'}
-        ref={ref}
         className={loading ? `hidden` : `border-none`}
         height="100%"
         src={`/~/${proxy}/${url}`}
@@ -38,4 +31,4 @@ const Serviceframe = ({
   );
 };
 
-export default React.forwardRef(Serviceframe);
+export default Serviceframe;
