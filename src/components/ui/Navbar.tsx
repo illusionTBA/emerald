@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useDisclosure, Text, Button, Spinner, Stack } from '@chakra-ui/react';
+import { useDisclosure, Text, Button, Stack } from '@chakra-ui/react';
 import {
   Drawer,
   DrawerBody,
@@ -9,7 +9,6 @@ import {
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
-  IconButton,
   Tooltip,
   Popover,
   PopoverTrigger,
@@ -22,33 +21,22 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
-import {
-  AiOutlineReload as Reload,
-  AiOutlineTool as Devtools,
-} from 'react-icons/ai';
-import { BsBookmark as Bookmark } from 'react-icons/bs';
-import { MdExitToApp as Exit } from 'react-icons/md';
 import { FaCog } from 'react-icons/fa';
 import { BsFillPeopleFill } from 'react-icons/bs';
 import { IoIosApps } from 'react-icons/io';
+import { FaDiscord } from 'react-icons/fa';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { xor, isUrl } from '../utils';
-import { Suspense } from 'react';
-import dynamic from 'next/dynamic';
-const DynamicSearchbox = dynamic(() => import('../proxy/Searchbox'), {
-  suspense: true,
-});
 import { useApps } from '../hooks';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 interface App {
   title: string;
   icon: string | React.ReactNode;
   source: string;
 }
 
-const Navbar = (props: any) => {
-  const isFrame = props.isFrame;
+const Navbar = () => {
   const [apps, setApps] = useState<any[]>([]);
   const [appInput, setAppInput] = useState('');
   const [appTitle, setAppTitle] = useState('');
@@ -90,98 +78,7 @@ const Navbar = (props: any) => {
     onOpen: onAppOpen,
     onClose: onAppClose,
   } = useDisclosure();
-
-  const [title, setTitle] = useState();
-
-  if (isFrame) {
-    return (
-      <>
-        <div className="flex relative top-0 bg-primary-400 h-16 w-full rounded-b-lg justify-center items-center md:hidden">
-          <div className="flex items-center m-2 w-full h-full justify-between">
-            <div className="flex items-center justify-center flex-row space-x-6">
-              <Image
-                src={'/images/emerald.png'}
-                alt="emerald"
-                width={50}
-                height={50}
-                className="m-5"
-              />
-              <Text fontSize="3xl" className="flex text-primary-100">
-                {title ? `${title}` : `Emerald`}
-              </Text>
-            </div>
-            <Suspense fallback={<Spinner />}>
-              <DynamicSearchbox />
-            </Suspense>
-            <div className="space-x-3 flex flex-row mr-5">
-              <Tooltip
-                hasArrow
-                label={'Soon'}
-                bg="base.300"
-                color={'base.100'}
-                placement="bottom"
-              >
-                <IconButton
-                  aria-label="Reload page"
-                  colorScheme={'base'}
-                  textColor={'base.400'}
-                  fontSize={'2xl'}
-                  icon={<Bookmark />}
-                />
-              </Tooltip>
-              <Tooltip
-                hasArrow
-                label={'Soon'}
-                bg="base.300"
-                color={'base.100'}
-                placement="bottom"
-              >
-                <IconButton
-                  aria-label="Open a chrome like devtool menu"
-                  colorScheme={'base'}
-                  textColor={'base.400'}
-                  fontSize={'2xl'}
-                  icon={<Devtools />}
-                />
-              </Tooltip>
-              <Tooltip
-                hasArrow
-                label={'Soon'}
-                bg="base.300"
-                color={'base.100'}
-                placement="bottom"
-              >
-                <IconButton
-                  aria-label="Reload page"
-                  colorScheme={'base'}
-                  textColor={'base.400'}
-                  fontSize={'2xl'}
-                  icon={<Reload />}
-                />
-              </Tooltip>
-              <Tooltip
-                hasArrow
-                label={'Exit'}
-                bg="base.300"
-                color={'base.100'}
-                placement="bottom"
-              >
-                <IconButton
-                  aria-label="Exit"
-                  colorScheme={'base'}
-                  fontSize={'2xl'}
-                  icon={<Exit />}
-                  onClick={() => {
-                    Router.push('/');
-                  }}
-                />
-              </Tooltip>
-            </div>
-          </div>
-        </div>
-      </>
-    );
-  }
+  const router = useRouter();
   return (
     <>
       <motion.div
@@ -206,6 +103,18 @@ const Navbar = (props: any) => {
           </div>
 
           <div className="space-x-3 flex flex-row">
+            <Button
+              colorScheme={'purple'}
+              variant="outline"
+              leftIcon={<FaDiscord />}
+              onClick={() => {
+                router.push({
+                  pathname: 'https://discord.gg/nq5xqEbHtp',
+                });
+              }}
+            >
+              Discord
+            </Button>
             <Button
               colorScheme={'twitter'}
               variant="outline"
@@ -268,7 +177,7 @@ const Navbar = (props: any) => {
                           <div
                             className="flex justify-center w-28 bg-primary-500 p-1 rounded-lg hover:bg-primary-300 hover:cursor-pointer transition-all"
                             onClick={() =>
-                              Router.push({
+                              router.push({
                                 pathname: '/service',
                                 query: { s: xor.encode(app.source) },
                               })
@@ -311,7 +220,7 @@ const Navbar = (props: any) => {
                           <div
                             className="flex justify-center w-28 bg-primary-500 p-1 rounded-lg hover:bg-primary-300 hover:cursor-pointer transition-all"
                             onClick={() =>
-                              Router.push({
+                              router.push({
                                 pathname: '/service',
                                 query: { s: xor.encode(app.url) },
                               })
