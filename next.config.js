@@ -12,11 +12,11 @@ const nextconfig = {
       */
       {
         source: '/bare/',
-        destination: 'http://0.0.0.0:7000/',
+        destination: 'http://0.0.0.0:7001/',
       },
       {
         source: '/bare/:path*/',
-        destination: 'http://0.0.0.0:7000/:path*/',
+        destination: 'http://0.0.0.0:7001/:path*/',
       },
     ];
   },

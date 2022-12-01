@@ -1,6 +1,6 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
-import { ChakraProvider, extendTheme, useToast } from '@chakra-ui/react';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import { useEffect, useState, createContext } from 'react';
 import { Workbox } from 'workbox-window';
 import { AnimatePresence } from 'framer-motion';
@@ -16,14 +16,8 @@ const theme = extendTheme({
     },
   },
 });
-interface Ialert {
-  title: string;
-  description: string;
-  type?: 'info' | 'warning' | 'success' | 'error' | 'loading';
-}
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const toast = useToast();
   useEffect(() => {
     if (
       !('serviceWorker' in navigator) ||

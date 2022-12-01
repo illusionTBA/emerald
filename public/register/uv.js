@@ -1,5 +1,7 @@
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/uv-sw.js', { scope: window.__uv$config.prefix });
+  navigator.serviceWorker.register('/uv-sw.js', {
+    scope: window.__uv$config.prefix,
+  });
 
-    location.reload();
-} 
+  location.reload();
+}
