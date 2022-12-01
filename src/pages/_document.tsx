@@ -17,7 +17,6 @@ function Document() {
       <body>
         <Main />
         <NextScript />
-        {/* injecting proxy scripts */}
         <Script
           src="/proxies/old-uv/uv.bundle.js"
           strategy="beforeInteractive"
@@ -26,8 +25,6 @@ function Document() {
           src="/proxies/old-uv/uv.config.js"
           strategy="beforeInteractive"
         />
-        <Script src="/proxies/dip/dip.config.js" strategy="beforeInteractive" />
-        <Script src="/proxies/dip/dip.page.js" strategy="beforeInteractive" />
       </body>
     </Html>
   );

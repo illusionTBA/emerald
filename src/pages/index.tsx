@@ -6,6 +6,7 @@ import { Searchbox } from '../components/proxy';
 import { Navbar } from '../components/ui';
 import Wave from 'react-wavify';
 import { useSw } from '../components/hooks';
+import Script from 'next/script';
 const Home: NextPage = () => {
   useSw('/uv-sw.js', '/~/uv/');
   useEffect(() => {});
