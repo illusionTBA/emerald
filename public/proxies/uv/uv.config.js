@@ -1,7 +1,7 @@
 /*global Ultraviolet*/
 self.__uv$config = {
   prefix: '/~/uv/',
-  bare: 'http://161.97.156.62:7000/bare/',
+  bare: '/bare/',
   encodeUrl: Ultraviolet.codec.xor.encode,
   decodeUrl: Ultraviolet.codec.xor.decode,
   handler: '/proxies/uv/uv.handler.js',
