@@ -48,5 +48,10 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
       source: "https://zoro.to",
       icon: "/images/zoro.jpg",
     },
+    {
+      title: "Phantom Games",
+      source: "https://phantom.delusionz.xyz/",
+      icon: "/images/phantom.png",
+    }
   ]);
 }

@@ -9,7 +9,6 @@ import { useSw } from '../components/hooks';
 import Script from 'next/script';
 const Home: NextPage = () => {
   useSw('/uv-sw.js', '/~/uv/');
-  useEffect(() => {});
   return (
     <div className="flex w-full h-screen items-center justify-center">
       <Head>

@@ -12,7 +12,7 @@ const Serviceframe = ({ url }: { url: string }) => {
     }, 1500);
   }, []);
   return (
-    <div className="flex w-full h-full">
+     <div className="flex w-full h-full">
       {loading ? (
         <div className="flex w-full h-full items-center justify-center flex-col space-y-2">
           <Text color={'base.100'} fontSize={'4xl'}>
@@ -28,7 +28,7 @@ const Serviceframe = ({ url }: { url: string }) => {
         src={`/~/${proxy}/${url}`}
       ></iframe>
     </div>
-  );
+ );
 };
 
 export default Serviceframe;
